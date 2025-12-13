@@ -78,9 +78,12 @@ def vqc_block(n_qubits: int):
     dev = qml.device("default.qubit", wires=n_qubits)
 
     @qml.qnode(dev, interface="torch")
-    def circuit(inputs, weights):
+    def circuit(inputs, weights) : 
+        for i in range (n_qubits) : 
+            qml.Hadamard(wires=i)
         qml.AngleEmbedding(inputs, wires=range(n_qubits))
         for wire in range(n_qubits):
+            
             qml.RY(weights[0, wire], wires=wire)
             qml.RZ(weights[1, wire], wires=wire)
         for i in range(n_qubits - 1):
@@ -111,7 +114,7 @@ class QuantumGate(nn.Module):
 class QuantumLSTMCell(nn.Module):
     def __init__(self, input_dim: int, hidden_dim: int, n_qubits: int):
         super().__init__()
-        self.hidden_dim = hidden_dim
+        self.hidden_dim = hidden_dim        
         self.forget_gate = QuantumGate(input_dim, hidden_dim, n_qubits)
         self.input_gate = QuantumGate(input_dim, hidden_dim, n_qubits)
         self.candidate_gate = QuantumGate(input_dim, hidden_dim, n_qubits)
@@ -281,6 +284,7 @@ def parse_args():
     return parser.parse_args()
 
 
+
 def main():
     args = parse_args()
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -307,6 +311,7 @@ def main():
 
     print(f"Train set: {train_counts[0]} samples with label 0, {train_counts[1]} samples with label 1")
     print(f"Test set:  {test_counts[0]} samples with label 0, {test_counts[1]} samples with label 1")
+    
 
 
     model = QuantumLSTMClassifier(
@@ -327,6 +332,8 @@ def main():
         )
 
 
-if __name__ == "__main__":
-    
+if __name__ =="__main__":
     main()
+# if __name__ == "__main__":
+    
+#  

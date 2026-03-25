@@ -75,9 +75,9 @@ def balance_dataset(ds, ratio=0.5):
 
 
 def vqc_block(n_qubits: int):
-    dev = qml.device("default.qubit", wires=n_qubits)
+    dev = qml.device("default.qubit", wires=n_qubits) # default.qubit 
 
-    @qml.qnode(dev, interface="torch")
+    @qml.qnode(dev, interface="torch") # intorface="torch" - bo diff_method di 
     def circuit(inputs, weights) : 
         for i in range (n_qubits) : 
             qml.Hadamard(wires=i)
